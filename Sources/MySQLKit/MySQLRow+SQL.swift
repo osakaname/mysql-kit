@@ -1,4 +1,4 @@
-import MySQLNIO
+@preconcurrency import MySQLNIO
 import SQLKit
 
 extension MySQLRow {
