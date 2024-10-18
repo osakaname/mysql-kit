@@ -19,25 +19,25 @@ struct MissingColumn: Error {
 }
 
 /// Wraps a `MySQLRow` with the `SQLRow` protocol.
-private struct MySQLSQLRow: SQLRow {
+public struct MySQLSQLRow: SQLRow {
     /// The underlying `MySQLRow`.
-    let row: MySQLRow
+    public let row: MySQLRow
     
     /// A ``MySQLDataDecoder`` used to translate `MySQLData` values into output values.
     let decoder: MySQLDataDecoder
 
     // See `SQLRow.allColumns`.
-    var allColumns: [String] {
+    public var allColumns: [String] {
         self.row.columnDefinitions.map { $0.name }
     }
 
     // See `SQLRow.contains(column:)`.
-    func contains(column: String) -> Bool {
+    public func contains(column: String) -> Bool {
         self.row.columnDefinitions.contains { $0.name == column }
     }
 
     // See `SQLRow.decodeNil(column:)`.
-    func decodeNil(column: String) throws -> Bool {
+    public func decodeNil(column: String) throws -> Bool {
         guard let data = self.row.column(column) else {
             return true
         }
@@ -45,7 +45,7 @@ private struct MySQLSQLRow: SQLRow {
     }
 
     // See `SQLRow.decode(column:as:)`.
-    func decode<D: Decodable>(column: String, as: D.Type) throws -> D {
+    public func decode<D: Decodable>(column: String, as: D.Type) throws -> D {
         guard let data = self.row.column(column) else {
             throw MissingColumn(column: column)
         }
